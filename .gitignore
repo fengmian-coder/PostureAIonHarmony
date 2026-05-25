@@ -1,0 +1,44 @@
+# DevEco / HarmonyOS
+.hvigor/
+build/
+entry/build/
+oh_modules/
+node_modules/
+.cxx/
+*.hap
+*.hsp
+*.app
+*.signed
+*.idsig
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Database / local data
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env
+.env.*
+config.local.*

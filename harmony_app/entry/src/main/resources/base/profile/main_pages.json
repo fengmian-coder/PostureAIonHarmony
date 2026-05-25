@@ -1,0 +1,11 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/DetectPage",
+    "pages/ResultPage",
+    "pages/HistoryPage",
+    "pages/SettingsPage",
+    "pages/ReportPage",
+    "pages/HistoryDetailPage"
+  ]
+}

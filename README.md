@@ -30,7 +30,9 @@
 - 清空历史记录
 - 系统设置与后端连接测试
 
-##项目结构
+
+## 项目结构
+
 ```text
 PostureAIonHarmony
 ├── harmony_app                         # HarmonyOS 前端项目

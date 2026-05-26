@@ -1,6 +1,7 @@
 import { router } from '@kit.ArkUI'
 import { preferences } from '@kit.ArkData'
 import { ApiService, PostureHistoryRecord } from '../services/ApiService'
+import { HistoryViewModel } from '../viewmodels/HistoryViewModel'
 
 @Entry
 @Component
@@ -45,8 +46,10 @@ struct HistoryPage {
     ApiService.getHistory(this.baseUrl)
       .then((list: PostureHistoryRecord[]) => {
         this.loading = false
-        this.historyList = list
-        this.updateStatsByList(list)
+
+        const sortedList = HistoryViewModel.sortByLatest(list)
+        this.historyList = sortedList
+        this.updateStatsByList(sortedList)
       })
       .catch((message: string) => {
         this.loading = false
@@ -455,98 +458,28 @@ struct HistoryPage {
   }
 
   getScoreByAngle(angle: number): number {
-    if (angle <= 1) {
-      return 98
-    }
-    if (angle <= 2) {
-      return 92
-    }
-    if (angle <= 3) {
-      return 86
-    }
-    if (angle <= 5) {
-      return 78
-    }
-    if (angle <= 8) {
-      return 68
-    }
-    return 55
+    return HistoryViewModel.getScoreByAngle(angle)
   }
 
   updateStatsByList(list: PostureHistoryRecord[]) {
-    if (list.length === 0) {
-      this.avgScoreText = '--'
-      this.avgAngleText = '--'
-      this.riskCountText = '0'
-      this.bestScoreText = '--'
-      return
-    }
+    const stats = HistoryViewModel.calculateStats(list)
 
-    let totalScore = 0
-    let totalAngle = 0
-    let riskCount = 0
-    let bestScore = 0
-
-    list.forEach((item: PostureHistoryRecord) => {
-      const angle = Number(item.tilt_angle)
-      const score = this.getScoreByAngle(angle)
-
-      totalAngle += angle
-      totalScore += score
-
-      if (angle > 3) {
-        riskCount += 1
-      }
-
-      if (score > bestScore) {
-        bestScore = score
-      }
-    })
-
-    this.avgScoreText = (totalScore / list.length).toFixed(1)
-    this.avgAngleText = (totalAngle / list.length).toFixed(1)
-    this.riskCountText = riskCount.toString()
-    this.bestScoreText = bestScore.toString()
+    this.avgScoreText = stats.avgScoreText
+    this.avgAngleText = stats.avgAngleText
+    this.riskCountText = stats.riskCountText
+    this.bestScoreText = stats.bestScoreText
   }
 
   getTrendList(): PostureHistoryRecord[] {
-    return this.historyList.slice(0, 5).reverse()
+    return HistoryViewModel.getTrendList(this.historyList)
   }
 
   getAnglePercent(angle: number): number {
-    let percent = angle / 8 * 100
-
-    if (percent < 10) {
-      percent = 10
-    }
-
-    if (percent > 100) {
-      percent = 100
-    }
-
-    return percent
-  }
-
-  getAverageAngleText(): string {
-    if (this.avgAngleText === '--') {
-      return '0'
-    }
-
-    return this.avgAngleText
+    return HistoryViewModel.getAnglePercent(angle)
   }
 
   getSummaryAdvice(): string {
-    if (this.historyList.length === 0) {
-      return '当前暂无检测记录。完成一次体态检测后，系统会根据历史数据生成趋势分析和改善建议。'
-    }
-
-    const avgAngle = Number(this.getAverageAngleText())
-
-    if (avgAngle > 3) {
-      return '历史记录显示你的肩部倾角平均值偏高，建议保持规律拉伸，并减少长时间单肩背包、低头久坐等习惯。'
-    }
-
-    return '历史记录显示你的肩部状态整体较好，建议继续保持良好的坐姿和规律运动习惯。'
+    return HistoryViewModel.getSummaryAdvice(this.historyList)
   }
 
   @Builder

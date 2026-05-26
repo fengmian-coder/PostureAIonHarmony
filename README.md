@@ -30,12 +30,43 @@
 - 清空历史记录
 - 系统设置与后端连接测试
 
-## 项目结构
-
+##项目结构
 ```text
 PostureAIonHarmony
-├── harmony_app   # HarmonyOS 前端项目
-└── backend       # FastAPI 后端项目
+├── harmony_app                         # HarmonyOS 前端项目
+│   └── entry/src/main
+│       ├── ets
+│       │   ├── entryability
+│       │   │   └── EntryAbility.ets    # 应用入口 Ability
+│       │   │
+│       │   ├── pages                   # View 层：页面展示与用户交互
+│       │   │   ├── Index.ets           # 首页
+│       │   │   ├── DetectPage.ets      # AI 体态检测页
+│       │   │   ├── ResultPage.ets      # 检测结果页
+│       │   │   ├── ReportPage.ets      # 检测报告页
+│       │   │   ├── HistoryPage.ets     # 健康档案页
+│       │   │   ├── HistoryDetailPage.ets # 历史详情页
+│       │   │   └── SettingsPage.ets    # 系统设置页
+│       │   │
+│       │   ├── models                  # Model 层：前端数据模型
+│       │   │   └── PostureModels.ets   # 统计结果、趋势数据等模型
+│       │   │
+│       │   ├── viewmodels              # ViewModel 层：业务逻辑处理
+│       │   │   └── HistoryViewModel.ets # 历史统计、评分、趋势处理
+│       │   │
+│       │   └── services                # Service 层：网络请求封装
+│       │       └── ApiService.ets      # FastAPI 接口调用
+│       │
+│       └── resources                   # 图片、图标、页面配置等资源
+│           └── base
+│               ├── media               # App 图标、Logo 等资源
+│               ├── element             # 字符串等资源
+│               └── profile             # 页面路由配置
+│
+└── backend                             # Python FastAPI 后端项目
+    ├── main.py                         # 后端接口、AI 检测、数据库操作
+    └── posture_data.db                 # SQLite 历史记录数据库
+
 ```
 
 ## 后端启动方式

@@ -14,7 +14,7 @@ from zhipuai import ZhipuAI
 
 # ================= 1. 大模型配置 (AI 康复教练) =================
 # 👇 把这里换成你在智谱官网申请到的 API Key
-AI_CLIENT = ZhipuAI(api_key="30f4d124b571436884b76e6f6e0b8328.o12LaXGxdsyTXUsM") 
+AI_CLIENT = ZhipuAI(api_key="ZHIPU") 
 
 def get_ai_coach_advice(tilt_angle, diagnosis):
     """大模型提示词工程 (Prompt Engineering)"""
